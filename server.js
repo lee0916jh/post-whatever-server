@@ -30,7 +30,6 @@ app.post("/signin", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  console.log(req.body);
   const newUser = {
     name: req.body.name,
     email: req.body.email,

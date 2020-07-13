@@ -74,7 +74,6 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/forum/post", (req, res) => {
-  console.log(req.body);
   const { poster_id, poster_name, title, text } = req.body;
   db.insert({ poster_id, poster_name, title, text })
     .into("posts")
@@ -90,6 +89,7 @@ app.get("/forum", (req, res) => {
     })
     .catch((err) => res.status(400).json("failed fetching data"));
 });
+
 app.get("/forum/posts/:id", (req, res) => {
   db.select("text", "title", "poster_id", "poster_name")
     .from("posts")
@@ -99,8 +99,13 @@ app.get("/forum/posts/:id", (req, res) => {
     })
     .catch((err) => res.status(400).json("failed fetching data"));
 });
+
 app.delete("/forum/posts/:id", (req, res) => {
-  console.log("req");
+  db("posts")
+    .where("id", req.body.id)
+    .del()
+    .then(() => res.json("delete success"))
+    .catch((err) => console.log("Couldn't find a matching post"));
 });
 
 app.get("/profile/:id", (req, res) => {

@@ -3,7 +3,6 @@ const cors = require("cors");
 const app = express();
 const bcrypt = require("bcryptjs");
 const knex = require("knex");
-const { json } = require("express");
 
 const db = knex({
   client: "pg",
@@ -25,7 +24,6 @@ app.post("/signin", (req, res) => {
     .from("login")
     .where("email", email)
     .then((data) => {
-      console.log(data);
       const user = data[0];
       const isValid = bcrypt.compareSync(password, user.hash);
       if (isValid) {
@@ -45,6 +43,7 @@ app.post("/signin", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { name, password, email } = req.body;
+  console.log(req.body);
   const hash = bcrypt.hashSync(password);
 
   db.transaction((trx) => {
@@ -74,6 +73,23 @@ app.post("/register", (req, res) => {
   );
 });
 
+app.post("/forum/post", (req, res) => {
+  console.log(req.body);
+  const { poster_id, poster_name, title, text } = req.body;
+  db.insert({ poster_id, poster_name, title, text })
+    .into("posts")
+    .then(() => res.json("post success"))
+    .catch((err) => res.status(400).json("post failed"));
+});
+
+app.get("/forum", (req, res) => {
+  db.select("*")
+    .from("posts")
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => res.status(400).json("failed fetching data"));
+});
 app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
 });

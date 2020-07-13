@@ -90,6 +90,19 @@ app.get("/forum", (req, res) => {
     })
     .catch((err) => res.status(400).json("failed fetching data"));
 });
+app.get("/forum/posts/:id", (req, res) => {
+  db.select("text", "title", "poster_id", "poster_name")
+    .from("posts")
+    .where("id", req.params.id)
+    .then((data) => {
+      res.json(data[0]);
+    })
+    .catch((err) => res.status(400).json("failed fetching data"));
+});
+app.delete("/forum/posts/:id", (req, res) => {
+  console.log("req");
+});
+
 app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
 });

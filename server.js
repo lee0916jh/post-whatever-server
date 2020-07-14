@@ -3,15 +3,12 @@ const cors = require("cors");
 const app = express();
 const bcrypt = require("bcryptjs");
 const knex = require("knex");
-const { response } = require("express");
 
 const db = knex({
   client: "pg",
   connection: {
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    ssl: false,
   },
 });
 
@@ -86,7 +83,7 @@ app.post("/forum/post", (req, res) => {
   })
     .into("posts")
     .then(() => res.json(req.body))
-    .catch((err) => res.status(400).json(err));
+    .catch((err) => res.status(400).json(req.body));
 });
 
 app.get("/forum", (req, res) => {

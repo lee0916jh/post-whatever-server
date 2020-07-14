@@ -85,7 +85,7 @@ app.post("/forum/post", (req, res) => {
     text: text,
   })
     .into("posts")
-    .then(() => res.json("post success"))
+    .then(() => res.json(req.body))
     .catch((err) => res.status(400).json(err));
 });
 

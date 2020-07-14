@@ -92,7 +92,7 @@ app.get("/forum", (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).json("failed fetching data");
+      res.status(400).json(err);
     });
 });
 
@@ -102,6 +102,7 @@ app.get("/forum/posts/:id", (req, res) => {
     .where("id", req.params.id)
     .then((data) => {
       res.json(data[0]);
+      d;
     })
     .catch((err) => res.status(400).json("failed fetching data"));
 });

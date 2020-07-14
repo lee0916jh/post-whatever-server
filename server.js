@@ -78,10 +78,15 @@ app.post("/register", (req, res) => {
 
 app.post("/forum/post", (req, res) => {
   const { poster_id, poster_name, title, text } = req.body;
-  db.insert({ poster_id, poster_name, title, text })
+  db.insert({
+    poster_id: poster_id,
+    poster_name: poster_name,
+    title: title,
+    text: text,
+  })
     .into("posts")
     .then(() => res.json("post success"))
-    .catch((err) => res.status(400).json("post failed"));
+    .catch((err) => res.status(400).json(err));
 });
 
 app.get("/forum", (req, res) => {
@@ -92,7 +97,7 @@ app.get("/forum", (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).json(err);
+      res.status(400).json("failed fetching data");
     });
 });
 
@@ -102,7 +107,6 @@ app.get("/forum/posts/:id", (req, res) => {
     .where("id", req.params.id)
     .then((data) => {
       res.json(data[0]);
-      d;
     })
     .catch((err) => res.status(400).json("failed fetching data"));
 });

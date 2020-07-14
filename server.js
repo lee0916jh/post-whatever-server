@@ -7,10 +7,8 @@ const knex = require("knex");
 const db = knex({
   client: "pg",
   connection: {
-    host: "127.0.0.1",
-    user: "junlee",
-    password: "",
-    database: "post-whatever",
+    host: "process.env.DATABASE_URL",
+    ssl: true,
   },
 });
 
@@ -111,7 +109,7 @@ app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
 });
 
-// const PORT = process.env.PORT || 3000;
-app.listen(3000, () => {
-  console.log(3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(PORT);
 });

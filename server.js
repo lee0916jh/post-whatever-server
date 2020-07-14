@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const bcrypt = require("bcryptjs");
 const knex = require("knex");
+const { response } = require("express");
 
 const db = knex({
   client: "pg",
@@ -15,6 +16,9 @@ const db = knex({
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.json("connected to home");
+});
 app.post("/signin", (req, res) => {
   const { email, password } = req.body;
 
